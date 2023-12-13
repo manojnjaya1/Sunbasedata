@@ -1,0 +1,102 @@
+body {
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  margin: 2vw;
+}
+
+h1 {
+  text-align: center;
+}
+
+table {
+  border-collapse: collapse;
+  width: 80%;
+}
+
+th,
+td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+button {
+  cursor: pointer;
+}
+
+.login-container {
+  text-align: center;
+}
+
+.customers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.create-customer-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.create-customer-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.create-customer-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-customer-container label {
+  margin-bottom: 5px;
+}
+
+.create-customer-container input {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.create-customer-container button,
+.customer-buttons {
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 4px;
+}
+.createCustomerForm-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+.createCustomerForm-buttons button {
+  width: 45%;
+  margin: 0;
+}
+.create-customer-container button:hover {
+  background-color: #0056b3;
+}
+
+.create-customer-container button:focus {
+  outline: none;
+}
+
+.create-customer-button {
+  margin: 1rem;
+  margin-left: 9.6vw;
+  padding: 1rem;
+}

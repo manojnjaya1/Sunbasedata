@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Customer List</title>
+    <link rel="stylesheet" href="styles/styles.css" />
+  </head>
+  <body>
+    <h1>Customer List</h1>
+
+    <div>
+      <a href="customer-form.html"
+        ><button class="create-customer-button customer-buttons">
+          Create Customer
+        </button>
+      </a>
+      <div class="customers">
+        <table id="customerList">
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Action</th>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <script>
+      fetch("http://localhost:8080/api/customers")
+        .then((response) => response.json())
+        .then((customers) => {
+          customers.sort((a, b) => a.first_name.localeCompare(b.first_name));
+          const customerList = document.getElementById("customerList");
+
+          customers.forEach((customer) => {
+            const tr = document.createElement("tr");
+            tr.setAttribute("data-uuid", customer.uuid);
+            tr.innerHTML = `
+                    <td>${customer.first_name}</td>
+                    <td>${customer.last_name}</td>
+                    <td>${customer.street} ${customer.street ? "," : ""} ${
+              customer.address
+            }</td>
+                    <td>${customer.city}</td>
+                    <td>${customer.state}</td>
+                    <td>${customer.email}</td>
+                    <td>${customer.phone}</td>
+                    <td>
+                        <button class="customer-buttons" onclick="editCustomer('${
+                          customer.uuid
+                        }')">Edit</button>
+                        <button class="customer-buttons" onclick="deleteCustomer('${
+                          customer.uuid
+                        }')">Delete</button>
+                    </td>
+                `;
+            customerList.appendChild(tr);
+          });
+        })
+        .catch((error) =>
+          console.error("Error fetching customer data:", error)
+        );
+
+      function editCustomer(uuid) {
+        console.log(uuid);
+        const tr = document.querySelector(`[data-uuid="${uuid}"]`);
+        if (tr) {
+          const tds = tr.getElementsByTagName("td");
+          if (tds.length >= 7) {
+            const first_name = tds[0].textContent;
+            const last_name = tds[1].textContent;
+            const street = tds[2].textContent.split(",")[0];
+            const address = tds[2].textContent.split(",")[1];
+            const city = tds[3].textContent;
+            const state = tds[4].textContent;
+            const email = tds[5].textContent;
+            const phone = tds[6].textContent;
+
+            const urlParams = new URLSearchParams();
+            urlParams.append("uuid", uuid);
+            urlParams.append("first_name", first_name);
+            urlParams.append("last_name", last_name);
+            urlParams.append("street", street);
+            urlParams.append("address", address);
+            urlParams.append("city", city);
+            urlParams.append("state", state);
+            urlParams.append("email", email);
+            urlParams.append("phone", phone);
+
+            window.location.href = `./customer-form.html?${urlParams.toString()}`;
+          } else {
+            alert("Invalid customer data.");
+          }
+        } else {
+          alert("Customer not found.");
+        }
+      }
+
+      function deleteCustomer(uuid) {
+        fetch(`http://localhost:8080/api/delete-customer/${uuid}`, {
+          method: "POST",
+        })
+          .then((response) => {
+            if (response.ok) {
+              alert("Customer deleted successfully!");
+              window.location.reload();
+            } else if (response.status === 404) {
+              alert("UUID not found");
+            } else {
+              alert("Error deleting customer");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    </script>
+  </body>
+</html>
